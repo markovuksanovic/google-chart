@@ -172,7 +172,7 @@ Data can be provided in one of three ways:
 
         readyForAction: function(e, detail, sender) {
           google.load("visualization", "1", {
-            packages: ['corechart'],
+            packages: ['corechart', 'table'],
             callback: function() {
               this.isReady = true;
               this.loadChartTypes();
@@ -217,6 +217,10 @@ Data can be provided in one of three ways:
               google.visualization.events.addOneTimeListener(this.chartObject,
                   'ready', function() {
                       this.fire('google-chart-render');
+                  }.bind(this));
+              google.visualization.events.addOneTimeListener(this.chartObject,
+                  'select', function() {
+                     this.fire('google-chart-select');
                   }.bind(this));
               this.chartObject.draw(this.dataTable, this.options);
             } else {
@@ -301,6 +305,10 @@ Data can be provided in one of three ways:
           }
 
           return dataTable;
+        },
+
+        getSelection: function() {
+            return this.chartObject.getSelection();
         }
       });
     })();
